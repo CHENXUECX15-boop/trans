@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>医学术语四源查询台</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="shell">
+      <section class="workspace" aria-label="医学术语查询工作台">
+        <header class="masthead">
+          <div class="identity" aria-hidden="true">
+            <svg viewBox="0 0 64 64" role="img">
+              <path d="M15 12h34a3 3 0 0 1 3 3v34a3 3 0 0 1-3 3H15a3 3 0 0 1-3-3V15a3 3 0 0 1 3-3Z" />
+              <path d="M23 32h18M32 23v18" />
+              <path d="M20 50c3-8 21-8 24 0" />
+            </svg>
+          </div>
+          <div>
+            <p class="eyebrow">Medical terminology translator</p>
+            <h1>医学术语四源查询台</h1>
+          </div>
+          <div class="source-count">
+            <strong>4</strong>
+            <span>个来源</span>
+          </div>
+        </header>
+
+        <section class="query-panel" aria-label="查询区">
+          <label for="termInput">查询词条</label>
+          <div class="query-row">
+            <input id="termInput" type="search" placeholder="输入英文或中文医学术语，例如 apoptosis / 心肌梗死" autocomplete="off" />
+            <button class="primary" id="queryAllButton" type="button">
+              <span class="button-icon" aria-hidden="true">↗</span>
+              查询全部
+            </button>
+          </div>
+          <div class="quick-actions" role="group" aria-label="快捷操作">
+            <button id="copyTermButton" type="button">复制词条</button>
+            <button id="clearButton" type="button">清空本页</button>
+            <label class="file-button" for="csvInput">导入CSV</label>
+            <input id="csvInput" type="file" accept=".csv,.tsv,text/csv,text/tab-separated-values" />
+          </div>
+        </section>
+
+        <section class="inline-results" id="inlineResults" aria-label="在线查询结果">
+          <div class="inline-results-head">
+            <div>
+              <p class="eyebrow">Inline results</p>
+              <h2>在线查询结果</h2>
+            </div>
+            <p>点击查询后，本地服务会提取公开页面中的词条信息，并直接显示在这里。</p>
+          </div>
+
+          <div class="inline-result-grid">
+            <article class="inline-frame-card" data-source="eudic">
+              <header>
+                <h3>欧路词典</h3>
+                <a data-result-link href="https://dict.eudic.net/" target="_blank" rel="noopener noreferrer">备用打开</a>
+              </header>
+              <div class="live-result is-empty" id="eudicResult">
+                输入术语后点击“查询全部”，欧路中文百科第一段会显示在这里。
+              </div>
+            </article>
+
+            <article class="inline-frame-card" data-source="cnki">
+              <header>
+                <h3>CNKI 翻译助手</h3>
+                <a data-result-link href="https://dict.cnki.net/index/" target="_blank" rel="noopener noreferrer">备用打开</a>
+              </header>
+              <div class="live-result is-empty" id="cnkiResult">
+                输入术语后点击“查询全部”，CNKI 可获取的入口或提示会显示在这里。
+              </div>
+            </article>
+          </div>
+        </section>
+
+        <section class="source-board" aria-label="词典来源">
+          <article class="source-card" data-source="eudic">
+            <div class="source-head">
+              <div>
+                <h2>欧路词典</h2>
+                <p>优先摘录中文百科第一段；没有百科内容时退回英汉释义。</p>
+              </div>
+              <button class="icon-button open-source" type="button" aria-label="打开欧路词典">↗</button>
+            </div>
+            <textarea data-note="eudic" placeholder="从欧路词典复制译法、词性、短语或例句提示到这里。"></textarea>
+            <p class="source-cite">引用入口：dict.eudic.net/dicts/en/{term}</p>
+          </article>
+
+          <article class="source-card" data-source="xiangya">
+            <div class="source-head">
+              <div>
+                <h2>湘雅医学专业词典</h2>
+                <p>按你持有的纸本/离线词库录入；也可用 CSV 批量导入。</p>
+              </div>
+              <button class="icon-button open-source" type="button" aria-label="复制湘雅医学专业词典检索词">⧉</button>
+            </div>
+            <textarea data-note="xiangya" placeholder="录入湘雅医学专业词典中的译法和必要备注。"></textarea>
+            <p class="source-cite">引用方式：湘雅医学专业词典，按自有版本核对。</p>
+          </article>
+
+          <article class="source-card" data-source="cnki">
+            <div class="source-head">
+              <div>
+                <h2>CNKI 翻译助手</h2>
+                <p>当前 CNKI 词典域名入口；旧版直达不可用时请手动检索。</p>
+              </div>
+              <button class="icon-button open-source" type="button" aria-label="打开CNKI翻译助手">↗</button>
+            </div>
+            <textarea data-note="cnki" placeholder="从 CNKI 翻译助手复制术语译法、领域来源或文献语境。"></textarea>
+            <p class="source-cite">引用入口：dict.cnki.net/index/</p>
+          </article>
+
+          <article class="source-card" data-source="medical-sea">
+            <div class="source-head">
+              <div>
+                <h2>英中医学辞海</h2>
+                <p>纸本医学翻译工具书；建议录入页码或版本信息。</p>
+              </div>
+              <button class="icon-button open-source" type="button" aria-label="复制英中医学辞海检索词">⧉</button>
+            </div>
+            <textarea data-note="medical-sea" placeholder="录入《英中医学辞海》的译法、页码或条目说明。"></textarea>
+            <p class="source-cite">引用方式：王贤才等，《英中医学辞海》，1989。</p>
+          </article>
+        </section>
+      </section>
+
+      <aside class="summary-panel" aria-label="汇总结果">
+        <div class="summary-head">
+          <div>
+            <p class="eyebrow">Synthesis</p>
+            <h2>汇总译法</h2>
+          </div>
+          <button id="summarizeButton" class="primary" type="button">生成汇总</button>
+        </div>
+
+        <section class="result-block">
+          <h3>推荐译法</h3>
+          <output id="bestTranslation">等待查询或录入来源译法。</output>
+        </section>
+
+        <section class="result-block">
+          <h3>来源对照</h3>
+          <div id="sourceComparison" class="comparison-list"></div>
+        </section>
+
+        <section class="result-block">
+          <h3>引用汇总</h3>
+          <textarea id="citationOutput" readonly placeholder="点击生成汇总后，这里会生成可复制的来源说明。"></textarea>
+          <button id="copySummaryButton" type="button">复制汇总</button>
+        </section>
+
+        <section class="result-block">
+          <h3>CSV 格式</h3>
+          <p class="help-text">支持列名：term, source, translation, note。source 可填 eudic、xiangya、cnki、medical-sea。</p>
+          <pre>term,source,translation,note
+apoptosis,eudic,细胞凋亡,词条例句提示</pre>
+        </section>
+      </aside>
+    </main>
+
+    <div id="toast" role="status" aria-live="polite"></div>
+    <script src="app.js"></script>
+  </body>
+</html>
